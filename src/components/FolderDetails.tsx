@@ -3,7 +3,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertCircle, Clock, RefreshCw } from "lucide-react";
+import { CheckCircle, AlertCircle, MoreVertical, RefreshCw } from "lucide-react";
 import { FolderNode } from "@/types/folder";
 
 interface FolderDetailsProps {
@@ -38,12 +38,18 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
     );
   }
 
-  // Map folder status to corresponding status icon
-  const statusIcon = {
-    synced: <CheckCircle size={16} className="text-green-500" />,
-    error: <AlertCircle size={16} className="text-red-500" />,
-    pending: <Clock size={16} className="text-yellow-500" />
-  }[folder.status];
+  const getStatusIcon = (status: "synced" | "error" | "pending") => {
+    switch (status) {
+      case "synced":
+        return <CheckCircle size={16} className="text-green-500" />;
+      case "error":
+        return <AlertCircle size={16} className="text-red-500" />;
+      case "pending":
+        return <MoreVertical size={16} className="text-yellow-500" />;
+      default:
+        return null;
+    }
+  };
 
   // Calculate total items in the folder (including all subfolders)
   const totalItems = folder.children?.reduce((acc, child) => {
@@ -77,7 +83,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
             <div>
               <p className="text-sm font-medium text-shopify-icon-subdued">Status</p>
               <div className="flex items-center mt-1 space-x-2">
-                {statusIcon}
+                {getStatusIcon(folder.status)}
                 <span className="capitalize">{folder.status}</span>
               </div>
             </div>
@@ -118,7 +124,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
                     <TableCell>{child.name}</TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
-                        {statusIcon}
+                        {getStatusIcon(child.status)}
                         <span className="capitalize">{child.status}</span>
                       </div>
                     </TableCell>
