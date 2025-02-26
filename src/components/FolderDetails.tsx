@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle, AlertCircle, Clock } from "lucide-react";
-import { FolderNode } from "@/pages/Folders";
+import { FolderNode } from "@/types/folder";
 
 interface FolderDetailsProps {
   folder: FolderNode | null;
