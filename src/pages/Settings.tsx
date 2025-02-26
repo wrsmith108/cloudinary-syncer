@@ -12,15 +12,17 @@ const Settings = () => {
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-xl font-semibold mb-2">Settings</h1>
-        <a
-          href="https://cloudinary.com/documentation/shopify_user_guide"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-primary hover:underline"
-        >
-          Support
-          <ArrowUpRight className="size-4" />
-        </a>
+        <div className="inline-flex items-center gap-1">
+          <span className="text-primary">Support</span>
+          <a
+            href="https://cloudinary.com/documentation/shopify_user_guide"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:text-primary/90"
+          >
+            <ArrowUpRight className="size-4" />
+          </a>
+        </div>
       </div>
 
       <div className="space-y-6">
