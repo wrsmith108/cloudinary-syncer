@@ -4,14 +4,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { ArrowUpRight } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Settings = () => {
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-xl font-semibold">Settings</h1>
-        <Button>Save Changes</Button>
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold mb-2">Settings</h1>
+        <a
+          href="https://cloudinary.com/documentation/shopify_user_guide"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-primary hover:underline"
+        >
+          Support
+          <ArrowUpRight className="size-4" />
+        </a>
       </div>
 
       <div className="space-y-6">
