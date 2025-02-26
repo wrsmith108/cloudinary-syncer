@@ -1,7 +1,9 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { CheckCircle, AlertCircle, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, AlertCircle, Clock, RefreshCw } from "lucide-react";
 import { FolderNode } from "@/types/folder";
 
 interface FolderDetailsProps {
@@ -59,11 +61,24 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
             </div>
             <div>
               <p className="text-sm font-medium text-shopify-icon-subdued">Last Sync</p>
-              <p className="mt-1">
-                {folder.lastSync 
-                  ? new Date(folder.lastSync).toLocaleDateString() 
-                  : "Never"}
-              </p>
+              <div className="flex items-center justify-between mt-1">
+                <span>
+                  {folder.lastSync 
+                    ? new Date(folder.lastSync).toLocaleDateString() 
+                    : "Never"}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="ml-2"
+                  onClick={() => {
+                    console.log(`Initiating sync for folder: ${folder.id}`);
+                  }}
+                >
+                  <RefreshCw size={14} className="mr-1" />
+                  Sync
+                </Button>
+              </div>
             </div>
             <div>
               <p className="text-sm font-medium text-shopify-icon-subdued">Total Items</p>
