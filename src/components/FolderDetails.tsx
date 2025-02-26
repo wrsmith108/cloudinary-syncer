@@ -17,6 +17,19 @@ interface FolderDetailsProps {
  * @param folder - The selected folder to display details for, or null if no folder is selected
  */
 const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('default', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      timeZoneName: 'short'
+    }).format(date);
+  };
+
   if (!folder) {
     return (
       <div className="text-shopify-icon-subdued">
@@ -64,7 +77,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
               <div className="flex items-center justify-between mt-1">
                 <span>
                   {folder.lastSync 
-                    ? new Date(folder.lastSync).toLocaleDateString() 
+                    ? formatDateTime(folder.lastSync)
                     : "Never"}
                 </span>
                 <Button
@@ -119,7 +132,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
                     </TableCell>
                     <TableCell>
                       {child.lastSync 
-                        ? new Date(child.lastSync).toLocaleDateString() 
+                        ? formatDateTime(child.lastSync)
                         : "Never"}
                     </TableCell>
                   </TableRow>
@@ -134,3 +147,4 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
 };
 
 export default FolderDetails;
+
