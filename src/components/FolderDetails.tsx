@@ -10,12 +10,6 @@ interface FolderDetailsProps {
   folder: FolderNode | null;
 }
 
-/**
- * FolderDetails component displays detailed information about a selected folder.
- * Shows folder status, sync information, and subfolder details in a card layout.
- * 
- * @param folder - The selected folder to display details for, or null if no folder is selected
- */
 const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -32,7 +26,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
 
   if (!folder) {
     return (
-      <div className="text-shopify-icon-subdued">
+      <div className="text-shopify-icon-subdued text-center p-4">
         Select a folder to view its details
       </div>
     );
@@ -41,11 +35,11 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
   const getStatusIcon = (status: "synced" | "error" | "pending") => {
     switch (status) {
       case "synced":
-        return <CheckCircle size={16} className="text-green-500" />;
+        return <CheckCircle size={16} className="text-[#007F5F]" />;
       case "error":
-        return <AlertCircle size={16} className="text-red-500" />;
+        return <AlertCircle size={16} className="text-[#D82C0D]" />;
       case "pending":
-        return <MoreVertical size={16} className="text-yellow-500" />;
+        return <MoreVertical size={16} className="text-[#B98900]" />;
       default:
         return null;
     }
@@ -57,20 +51,21 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
   }, 0) || 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Folder Overview Card */}
-      <Card>
+      <Card className="border-shopify-border-subdued shadow-none">
         <CardHeader className="pb-3">
-          <CardTitle>Folder Overview</CardTitle>
+          <CardTitle className="text-base font-medium text-shopify-text">Folder Overview</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Sync</p>
+              <p className="text-sm font-medium mb-2 text-shopify-text">Sync</p>
               <div className="mt-1">
                 <Button
                   variant="outline"
                   size="sm"
+                  className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text"
                   onClick={() => {
                     console.log(`Initiating sync for folder: ${folder.id}`);
                   }}
@@ -81,23 +76,23 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Status</p>
+              <p className="text-sm font-medium mb-2 text-shopify-text">Status</p>
               <div className="flex items-center mt-1 space-x-2">
                 {getStatusIcon(folder.status)}
-                <span className="capitalize">{folder.status}</span>
+                <span className="capitalize text-sm">{folder.status}</span>
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Last Sync</p>
-              <p className="mt-1">
+              <p className="text-sm font-medium mb-2 text-shopify-text">Last Sync</p>
+              <p className="mt-1 text-sm">
                 {folder.lastSync 
                   ? formatDateTime(folder.lastSync)
                   : "Never"}
               </p>
             </div>
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Total Items</p>
-              <p className="mt-1">{totalItems}</p>
+              <p className="text-sm font-medium mb-2 text-shopify-text">Total Items</p>
+              <p className="mt-1 text-sm">{totalItems}</p>
             </div>
           </div>
         </CardContent>
@@ -105,30 +100,33 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
 
       {/* Subfolders Table Card */}
       {folder.children && folder.children.length > 0 && (
-        <Card>
+        <Card className="border-shopify-border-subdued shadow-none">
           <CardHeader className="pb-3">
-            <CardTitle>Subfolders</CardTitle>
+            <CardTitle className="text-base font-medium text-shopify-text">Subfolders</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last Sync</TableHead>
+                <TableRow className="border-shopify-border-subdued hover:bg-transparent">
+                  <TableHead className="text-sm font-medium text-shopify-text">Name</TableHead>
+                  <TableHead className="text-sm font-medium text-shopify-text">Status</TableHead>
+                  <TableHead className="text-sm font-medium text-shopify-text">Last Sync</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {folder.children.map((child) => (
-                  <TableRow key={child.id}>
-                    <TableCell>{child.name}</TableCell>
+                  <TableRow 
+                    key={child.id}
+                    className="border-shopify-border-subdued hover:bg-shopify-background"
+                  >
+                    <TableCell className="text-sm">{child.name}</TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         {getStatusIcon(child.status)}
-                        <span className="capitalize">{child.status}</span>
+                        <span className="capitalize text-sm">{child.status}</span>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-sm">
                       {child.lastSync 
                         ? formatDateTime(child.lastSync)
                         : "Never"}
