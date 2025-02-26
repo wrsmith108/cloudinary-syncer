@@ -50,12 +50,6 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
     return acc + (child.children?.length || 0) + 1;
   }, 0) || 0;
 
-  // Calculate total number of successfully synced items
-  const syncedItems = folder.children?.reduce((acc, child) => {
-    const childSynced = child.children?.filter(item => item.status === "synced").length || 0;
-    return acc + (child.status === "synced" ? 1 : 0) + childSynced;
-  }, 0) || 0;
-
   return (
     <div className="space-y-6">
       {/* Folder Overview Card */}
@@ -66,24 +60,11 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
         <CardContent>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Status</p>
-              <div className="flex items-center mt-1 space-x-2">
-                {statusIcon}
-                <span className="capitalize">{folder.status}</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Last Sync</p>
-              <div className="flex items-center justify-between mt-1">
-                <span>
-                  {folder.lastSync 
-                    ? formatDateTime(folder.lastSync)
-                    : "Never"}
-                </span>
+              <p className="text-sm font-medium text-shopify-icon-subdued">Sync</p>
+              <div className="mt-1">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="ml-2"
                   onClick={() => {
                     console.log(`Initiating sync for folder: ${folder.id}`);
                   }}
@@ -94,12 +75,23 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
               </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Total Items</p>
-              <p className="mt-1">{totalItems}</p>
+              <p className="text-sm font-medium text-shopify-icon-subdued">Status</p>
+              <div className="flex items-center mt-1 space-x-2">
+                {statusIcon}
+                <span className="capitalize">{folder.status}</span>
+              </div>
             </div>
             <div>
-              <p className="text-sm font-medium text-shopify-icon-subdued">Synced Items</p>
-              <p className="mt-1">{syncedItems}</p>
+              <p className="text-sm font-medium text-shopify-icon-subdued">Last Sync</p>
+              <p className="mt-1">
+                {folder.lastSync 
+                  ? formatDateTime(folder.lastSync)
+                  : "Never"}
+              </p>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-shopify-icon-subdued">Total Items</p>
+              <p className="mt-1">{totalItems}</p>
             </div>
           </div>
         </CardContent>
@@ -147,4 +139,3 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
 };
 
 export default FolderDetails;
-
