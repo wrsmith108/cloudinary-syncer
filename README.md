@@ -1,69 +1,136 @@
-# Welcome to your Lovable project
 
-## Project info
+# Cloudinary Sync for Shopify
 
-**URL**: https://lovable.dev/projects/1f81b937-8c59-463c-84a3-6dda779282ea
+A Shopify admin application that synchronizes Cloudinary media assets across multiple Shopify stores.
 
-## How can I edit this code?
+## Project Overview
 
-There are several ways of editing your application.
+This application provides a centralized interface for managing and synchronizing Cloudinary assets with Shopify stores. It follows Shopify's admin design patterns and provides robust functionality for asset management.
 
-**Use Lovable**
+### Key Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/1f81b937-8c59-463c-84a3-6dda779282ea) and start prompting.
+- **Folder Management**: Browse and manage Cloudinary folders with detailed sync status
+- **Sync Logs**: Track synchronization history and status
+- **Scheduled Syncs**: Schedule and manage automated synchronization tasks
+- **Configuration Settings**: Manage Cloudinary credentials and sync preferences
 
-Changes made via Lovable will be committed automatically to this repo.
+### Tech Stack
 
-**Use your preferred IDE**
+- **Frontend Framework**: React with TypeScript
+- **Build Tool**: Vite
+- **UI Components**: shadcn/ui
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **State Management**: TanStack Query (React Query)
+- **Routing**: React Router DOM
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Development Setup
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### Prerequisites
 
-Follow these steps:
+- Node.js & npm - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- A Shopify Partner account
+- Cloudinary account with API credentials
 
+### Local Development
+
+1. Clone the repository:
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
+```
 
-# Step 2: Navigate to the project directory.
+2. Navigate to the project directory:
+```sh
 cd <YOUR_PROJECT_NAME>
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+3. Install dependencies:
+```sh
+npm install
+```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+4. Start the development server:
+```sh
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/     # Reusable UI components
+│   ├── layout/    # Layout components (Header, etc.)
+│   └── ui/        # shadcn/ui components
+├── pages/         # Route components
+├── types/         # TypeScript type definitions
+├── hooks/         # Custom React hooks
+├── lib/           # Utility functions
+└── data/          # Mock data and constants
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Configuration
 
-## What technologies are used for this project?
+### Cloudinary Settings
 
-This project is built with .
+The application requires the following Cloudinary credentials:
+- Cloud Name
+- API Key
+- API Secret
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+These can be configured in the Settings page of the application.
 
-## How can I deploy this project?
+### Sync Preferences
 
-Simply open [Lovable](https://lovable.dev/projects/1f81b937-8c59-463c-84a3-6dda779282ea) and click on Share -> Publish.
+Users can configure:
+- Auto Sync (Enable/Disable)
+- Sync Interval (Hourly/Daily/Weekly/Monthly)
+- Notification Preferences
+- Retry Attempts
 
-## I want to use a custom domain - is that possible?
+## Deployment
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+### Production Deploy
+
+1. Visit [Lovable](https://lovable.dev/projects/1f81b937-8c59-463c-84a3-6dda779282ea)
+2. Click on Share -> Publish
+
+### Custom Domain Setup
+
+While custom domains aren't directly supported through Lovable, you can deploy to your own domain using Netlify. See our [Custom domains documentation](https://docs.lovable.dev/tips-tricks/custom-domain/) for detailed instructions.
+
+## Development Resources
+
+- [Cloudinary API Documentation](https://cloudinary.com/documentation/shopify_user_guide)
+- [shadcn/ui Components](https://ui.shadcn.com/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- [React Query Documentation](https://tanstack.com/query/latest)
+
+## Project Customization
+
+### Using Lovable
+
+Visit the [Lovable Project](https://lovable.dev/projects/1f81b937-8c59-463c-84a3-6dda779282ea) to make changes through the AI interface.
+
+### Using GitHub
+
+1. Navigate to the file you want to modify
+2. Click the "Edit" button (pencil icon)
+3. Make your changes and commit
+
+### Using GitHub Codespaces
+
+1. Navigate to the repository's main page
+2. Click "Code" -> "Codespaces"
+3. Click "New codespace"
+
+## Contributing
+
+1. Create a new branch for your feature
+2. Make your changes
+3. Submit a pull request with a clear description of the changes
+
+## Support
+
+For technical support or questions about the application, refer to the [Cloudinary Documentation](https://cloudinary.com/documentation/shopify_user_guide) or contact the development team.
