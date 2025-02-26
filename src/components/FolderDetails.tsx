@@ -9,6 +9,12 @@ interface FolderDetailsProps {
   folder: FolderNode | null;
 }
 
+/**
+ * FolderDetails component displays detailed information about a selected folder.
+ * Shows folder status, sync information, and subfolder details in a card layout.
+ * 
+ * @param folder - The selected folder to display details for, or null if no folder is selected
+ */
 const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
   if (!folder) {
     return (
@@ -18,16 +24,19 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
     );
   }
 
+  // Map folder status to corresponding status icon
   const statusIcon = {
     synced: <CheckCircle size={16} className="text-green-500" />,
     error: <AlertCircle size={16} className="text-red-500" />,
     pending: <Clock size={16} className="text-yellow-500" />
   }[folder.status];
 
+  // Calculate total items in the folder (including all subfolders)
   const totalItems = folder.children?.reduce((acc, child) => {
     return acc + (child.children?.length || 0) + 1;
   }, 0) || 0;
 
+  // Calculate total number of successfully synced items
   const syncedItems = folder.children?.reduce((acc, child) => {
     const childSynced = child.children?.filter(item => item.status === "synced").length || 0;
     return acc + (child.status === "synced" ? 1 : 0) + childSynced;
@@ -35,6 +44,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
 
   return (
     <div className="space-y-6">
+      {/* Folder Overview Card */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle>Folder Overview</CardTitle>
@@ -68,6 +78,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
         </CardContent>
       </Card>
 
+      {/* Subfolders Table Card */}
       {folder.children && folder.children.length > 0 && (
         <Card>
           <CardHeader className="pb-3">

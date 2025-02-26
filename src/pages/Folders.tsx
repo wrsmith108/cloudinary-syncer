@@ -13,6 +13,10 @@ import {
 } from "lucide-react";
 import FolderDetails from "@/components/FolderDetails";
 
+/**
+ * Represents the structure of a folder node in the folder tree.
+ * Used for both folders and subfolders throughout the application.
+ */
 export interface FolderNode {
   id: string;
   name: string;
@@ -21,6 +25,8 @@ export interface FolderNode {
   children?: FolderNode[];
 }
 
+// Mock data structure for folder hierarchy
+// TODO: Replace with actual API data fetching
 const initialFolders: FolderNode[] = [
   {
     id: "1",
@@ -165,6 +171,17 @@ const initialFolders: FolderNode[] = [
   }
 ];
 
+/**
+ * FolderItem component renders a single folder item in the folder tree.
+ * Handles expanding/collapsing of folders and displays folder status.
+ * 
+ * @param folder - The folder data to display
+ * @param level - The nesting level of the folder (used for indentation)
+ * @param expanded - Set of expanded folder IDs
+ * @param selected - Currently selected folder ID
+ * @param onToggle - Callback when folder is expanded/collapsed
+ * @param onSelect - Callback when folder is selected
+ */
 const FolderItem: React.FC<{
   folder: FolderNode;
   level: number;
@@ -177,6 +194,7 @@ const FolderItem: React.FC<{
   const hasChildren = folder.children && folder.children.length > 0;
   const isSelected = selected === folder.id;
 
+  // Map folder status to corresponding icon component
   const statusIcon = {
     synced: <CheckCircle size={16} className="text-green-500" />,
     error: <AlertCircle size={16} className="text-red-500" />,
@@ -243,7 +261,17 @@ const FolderItem: React.FC<{
   );
 };
 
+/**
+ * Folders component is the main view for displaying and managing the folder hierarchy.
+ * Implements a split panel view with folder tree on the left and folder details on the right.
+ * 
+ * Features:
+ * - Folder tree navigation with expand/collapse functionality
+ * - Folder selection with details panel
+ * - Search functionality (TODO: Implement search logic)
+ */
 const Folders = () => {
+  // Track expanded folder IDs and currently selected folder
   const [expanded, setExpanded] = useState<Set<string>>(new Set(["1", "2"]));
   const [selected, setSelected] = useState<string | null>("1");
   const [searchQuery, setSearchQuery] = useState("");
@@ -258,6 +286,7 @@ const Folders = () => {
     setExpanded(newExpanded);
   };
 
+  // Helper function to find a folder by ID in the folder tree
   const selectedFolder = selected
     ? findFolder(initialFolders, selected)
     : null;
