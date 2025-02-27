@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -11,10 +11,25 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { format, addMinutes, isAfter } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 interface FolderDetailsProps {
   folder: FolderNode | null;
 }
+
+// Common time zones with readable labels
+const TIME_ZONES = [
+  { value: "America/New_York", label: "Eastern Time (ET)" },
+  { value: "America/Chicago", label: "Central Time (CT)" },
+  { value: "America/Denver", label: "Mountain Time (MT)" },
+  { value: "America/Los_Angeles", label: "Pacific Time (PT)" },
+  { value: "America/Anchorage", label: "Alaska Time (AKT)" },
+  { value: "Pacific/Honolulu", label: "Hawaii Time (HT)" },
+  { value: "Europe/London", label: "Greenwich Mean Time (GMT)" },
+  { value: "Europe/Paris", label: "Central European Time (CET)" },
+  { value: "Asia/Tokyo", label: "Japan Standard Time (JST)" },
+  { value: "Australia/Sydney", label: "Australian Eastern Time (AET)" }
+];
 
 const FolderDetails: React.FC<FolderDetailsProps> = ({
   folder
@@ -29,6 +44,21 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
   );
   const [syncScheduled, setSyncScheduled] = useState<boolean>(false);
   const [scheduledSyncTime, setScheduledSyncTime] = useState<Date | null>(null);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<string>(() => {
+    try {
+      // Try to get the user's local time zone
+      return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    } catch (e) {
+      // Default to ET if we can't determine the local time zone
+      return "America/New_York";
+    }
+  });
+
+  // Find the timezone label for display
+  const getTimeZoneLabel = (tzValue: string) => {
+    const zone = TIME_ZONES.find(tz => tz.value === tzValue);
+    return zone ? zone.label : tzValue;
+  };
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -76,6 +106,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
   };
 
   const getScheduledDateTime = () => {
+    // Create a date object in the selected time zone
     const dateTimeString = `${scheduledDate}T${scheduledTime}`;
     return new Date(dateTimeString);
   };
@@ -92,10 +123,17 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
       setScheduledSyncTime(syncTime);
       setSyncScheduled(true);
       
-      console.log(`Scheduling sync for folder: ${folder.id} at ${syncTime.toString()}`);
+      // Format the time in the selected time zone for the toast message
+      const formattedTime = formatInTimeZone(
+        syncTime, 
+        selectedTimeZone,
+        "MMM d, yyyy h:mm a (zzz)"
+      );
+      
+      console.log(`Scheduling sync for folder: ${folder.id} at ${syncTime.toString()} in ${selectedTimeZone}`);
       toast({
         title: "Sync Scheduled",
-        description: `Folder "${folder.name}" will be synchronized at ${format(syncTime, "MMM d, yyyy h:mm a")}`,
+        description: `Folder "${folder.name}" will be synchronized at ${formattedTime}`,
       });
       
       // Set a timeout to trigger the sync at the scheduled time
@@ -130,6 +168,11 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
     return isAfter(scheduledTime, now);
   };
 
+  // Format scheduled time for display, with time zone
+  const formatScheduledTime = (time: Date) => {
+    return formatInTimeZone(time, selectedTimeZone, "MMM d, yyyy h:mm a (zzz)");
+  };
+
   return <div className="space-y-5">
       {/* Folder Overview Card */}
       <Card className="border-shopify-border-subdued shadow-none">
@@ -144,7 +187,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
                 {syncScheduled && scheduledSyncTime ? (
                   <div className="flex flex-col">
                     <div className="text-sm mb-2">
-                      Sync scheduled for {format(scheduledSyncTime, "MMM d, yyyy h:mm a")}
+                      Sync scheduled for {formatScheduledTime(scheduledSyncTime)}
                     </div>
                     <Button 
                       variant="outline" 
@@ -217,6 +260,24 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
                                   onChange={(e) => setScheduledTime(e.target.value)}
                                   className="w-full"
                                 />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="time-zone">Time Zone</Label>
+                                <Select 
+                                  value={selectedTimeZone} 
+                                  onValueChange={setSelectedTimeZone}
+                                >
+                                  <SelectTrigger id="time-zone">
+                                    <SelectValue placeholder="Select time zone" />
+                                  </SelectTrigger>
+                                  <SelectContent className="max-h-80">
+                                    {TIME_ZONES.map((tz) => (
+                                      <SelectItem key={tz.value} value={tz.value}>
+                                        {tz.label}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
                               </div>
                               <Button 
                                 onClick={handleSync} 
