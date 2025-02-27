@@ -61,6 +61,14 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
     });
   };
 
+  const handleSync = () => {
+    console.log(`Initiating sync for folder: ${folder.id}`);
+    toast({
+      title: "Sync Initiated",
+      description: `Folder "${folder.name}" is being synchronized`,
+    });
+  };
+
   return <div className="space-y-5">
       {/* Folder Overview Card */}
       <Card className="border-shopify-border-subdued shadow-none">
@@ -72,9 +80,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
             <div>
               <p className="text-sm font-medium mb-2 text-shopify-text">Sync</p>
               <div className="mt-1">
-                <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={() => {
-                console.log(`Initiating sync for folder: ${folder.id}`);
-              }}>
+                <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={handleSync}>
                   <RefreshCw size={14} className="mr-1" />
                   Sync
                 </Button>
@@ -150,3 +156,4 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
 };
 
 export default FolderDetails;
+
