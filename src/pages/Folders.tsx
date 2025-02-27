@@ -1,4 +1,29 @@
 
+/**
+ * Main folders page component displaying the folder hierarchy and details.
+ * 
+ * Architecture:
+ * - Uses a two-panel layout: folder tree on left, details on right
+ * - Maintains expanded/collapsed state for folder tree
+ * - Implements search functionality for folders
+ * - Shows folder details in right panel when selected
+ * 
+ * State Management:
+ * - expanded: Set of folder IDs that are currently expanded
+ * - selected: Currently selected folder ID
+ * - searchQuery: Current search term for filtering folders
+ * 
+ * Component Hierarchy:
+ * - FolderSearch: Search input for filtering folders
+ * - FolderItem: Recursive component for rendering folder tree
+ * - FolderDetails: Details panel for selected folder
+ * 
+ * Assumptions:
+ * - Folders data structure is hierarchical
+ * - Each folder has a unique ID
+ * - Initial expanded state includes folders "1" and "2"
+ * - Folder "1" is initially selected
+ */
 import React, { useState } from "react";
 import FolderDetails from "@/components/FolderDetails";
 import FolderItem from "@/components/FolderItem";

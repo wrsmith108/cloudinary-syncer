@@ -1,4 +1,36 @@
 
+/**
+ * Component for displaying detailed information about a selected folder.
+ * 
+ * Features:
+ * - Displays folder overview (status, last sync, total items)
+ * - Provides sync functionality (immediate or scheduled)
+ * - Shows subfolder table with status information
+ * - Implements folder removal capability
+ * 
+ * Toast Notifications:
+ * - Sync Initiated: When immediate sync starts
+ * - Sync Scheduled: When sync is scheduled for later
+ * - Schedule Cancelled: When scheduled sync is cancelled
+ * - Folder Removed: When folder is removed from Shopify
+ * 
+ * Time Handling:
+ * - Uses date-fns for date formatting
+ * - Supports multiple timezones through date-fns-tz
+ * - Scheduled times must be in the future
+ * 
+ * Button Behaviors:
+ * - Sync: Opens popover with immediate/scheduled options
+ * - Remove: Removes folder and resets sync state
+ * - Cancel Scheduled: Cancels pending scheduled sync
+ * 
+ * Assumptions:
+ * - Folder data includes status, lastSync, and children
+ * - Status can be "synced", "error", or "pending"
+ * - Browser's timezone is used as default
+ * - Toast notifications should be user-friendly
+ */
+
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

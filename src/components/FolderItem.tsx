@@ -1,4 +1,37 @@
 
+/**
+ * Recursive component for rendering individual folders in the folder tree.
+ * 
+ * Features:
+ * - Displays folder name, status icon, and last sync date
+ * - Shows/hides children based on expanded state
+ * - Indicates selected state with background color
+ * - Provides expand/collapse toggle
+ * 
+ * Visual Indicators:
+ * - Folder icons: Open/closed state
+ * - Status icons: 
+ *   - CheckCircle (green): synced
+ *   - AlertCircle (red): error
+ *   - Clock (yellow): pending
+ * 
+ * Interactions:
+ * - Click folder: Select folder
+ * - Click chevron: Toggle expanded state
+ * 
+ * Props:
+ * - folder: FolderNode containing folder data
+ * - level: Nesting level for indentation
+ * - expanded: Set of expanded folder IDs
+ * - selected: Currently selected folder ID
+ * - onToggle: Callback for expanding/collapsing
+ * - onSelect: Callback for selection
+ * 
+ * Assumptions:
+ * - Each folder has unique ID
+ * - Status is one of: synced, error, pending
+ * - Indentation is 16px per level
+ */
 import React from "react";
 import { 
   Folder, 

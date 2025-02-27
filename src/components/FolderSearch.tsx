@@ -1,4 +1,21 @@
 
+/**
+ * Search input component for filtering folders.
+ * 
+ * Features:
+ * - Provides search input with icon
+ * - Updates parent component with search term
+ * - Styled to match Shopify design system
+ * 
+ * Props:
+ * - value: Current search term
+ * - onChange: Callback for search term updates
+ * 
+ * Styling:
+ * - Uses shadcn/ui Input component
+ * - Search icon positioned absolutely
+ * - Consistent with Shopify border colors
+ */
 import React from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";

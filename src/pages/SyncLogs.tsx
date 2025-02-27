@@ -1,4 +1,30 @@
 
+/**
+ * Page component for displaying synchronization history.
+ * 
+ * Features:
+ * - Shows table of sync attempts
+ * - Displays status, timing, and results
+ * - Indicates errors when sync fails
+ * 
+ * Status Types:
+ * - success: Completed successfully (green check)
+ * - error: Failed with error (red alert)
+ * - in_progress: Currently running (yellow clock)
+ * 
+ * Table Columns:
+ * - Status: Visual indicator of sync result
+ * - Folder: Path to synchronized folder
+ * - Start Time: When sync began
+ * - End Time: When sync completed (or "In Progress")
+ * - Files Processed: Number of files handled
+ * - Details: Error message if applicable
+ * 
+ * Assumptions:
+ * - Times are stored in ISO format
+ * - Status is one of: success, error, in_progress
+ * - Error details only shown for failed syncs
+ */
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { CheckCircle, AlertCircle, Clock } from "lucide-react";
 

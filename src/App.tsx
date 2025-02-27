@@ -1,4 +1,19 @@
 
+/**
+ * Main application component that sets up core providers and routing.
+ * 
+ * Architecture:
+ * - Uses React Query for data fetching and state management
+ * - Implements React Router for navigation
+ * - Provides toast notifications through both Radix UI and Sonner
+ * - Wraps the app in necessary providers (Query, Tooltip)
+ * 
+ * Route Structure:
+ * - / : Folders (main dashboard)
+ * - /sync-logs : Synchronization history
+ * - /scheduled : Scheduled synchronizations
+ * - /settings : Application settings
+ */
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";

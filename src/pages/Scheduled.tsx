@@ -1,4 +1,27 @@
 
+/**
+ * Page component for managing scheduled synchronizations.
+ * 
+ * Features:
+ * - Lists all scheduled sync tasks
+ * - Shows frequency, timing, and last run
+ * - Provides deletion capability
+ * 
+ * Table Columns:
+ * - Folder: Path to target folder
+ * - Frequency: How often sync runs
+ * - Next Run: Next scheduled execution
+ * - Last Sync: Most recent sync time
+ * - Actions: Delete scheduled task
+ * 
+ * Button Behavior:
+ * - Delete (trash icon): Removes scheduled sync
+ * 
+ * Assumptions:
+ * - Times stored in ISO format
+ * - Frequencies are: Daily, Weekly, Monthly
+ * - Each sync has unique ID
+ */
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
