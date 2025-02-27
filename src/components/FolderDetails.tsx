@@ -1,16 +1,15 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertCircle, MoreVertical, RefreshCw } from "lucide-react";
 import { FolderNode } from "@/types/folder";
-
 interface FolderDetailsProps {
   folder: FolderNode | null;
 }
-
-const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
+const FolderDetails: React.FC<FolderDetailsProps> = ({
+  folder
+}) => {
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('default', {
@@ -23,15 +22,11 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
       timeZoneName: 'short'
     }).format(date);
   };
-
   if (!folder) {
-    return (
-      <div className="text-shopify-icon-subdued text-center p-4">
+    return <div className="text-shopify-icon-subdued text-center p-4">
         Select a folder to view its details
-      </div>
-    );
+      </div>;
   }
-
   const getStatusIcon = (status: "synced" | "error" | "pending") => {
     switch (status) {
       case "synced":
@@ -49,9 +44,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
   const totalItems = folder.children?.reduce((acc, child) => {
     return acc + (child.children?.length || 0) + 1;
   }, 0) || 0;
-
-  return (
-    <div className="space-y-5">
+  return <div className="space-y-5">
       {/* Folder Overview Card */}
       <Card className="border-shopify-border-subdued shadow-none">
         <CardHeader className="pb-3">
@@ -62,14 +55,9 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
             <div>
               <p className="text-sm font-medium mb-2 text-shopify-text">Sync</p>
               <div className="mt-1">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text"
-                  onClick={() => {
-                    console.log(`Initiating sync for folder: ${folder.id}`);
-                  }}
-                >
+                <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={() => {
+                console.log(`Initiating sync for folder: ${folder.id}`);
+              }}>
                   <RefreshCw size={14} className="mr-1" />
                   Sync
                 </Button>
@@ -85,13 +73,11 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
             <div>
               <p className="text-sm font-medium mb-2 text-shopify-text">Last Sync</p>
               <p className="mt-1 text-sm">
-                {folder.lastSync 
-                  ? formatDateTime(folder.lastSync)
-                  : "Never"}
+                {folder.lastSync ? formatDateTime(folder.lastSync) : "Never"}
               </p>
             </div>
             <div>
-              <p className="text-sm font-medium mb-2 text-shopify-text">Total Items</p>
+              <p className="text-sm font-medium mb-2 text-shopify-text">Total Assets</p>
               <p className="mt-1 text-sm">{totalItems}</p>
             </div>
           </div>
@@ -99,8 +85,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
       </Card>
 
       {/* Subfolders Table Card */}
-      {folder.children && folder.children.length > 0 && (
-        <Card className="border-shopify-border-subdued shadow-none">
+      {folder.children && folder.children.length > 0 && <Card className="border-shopify-border-subdued shadow-none">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-medium text-shopify-text">Subfolders</CardTitle>
           </CardHeader>
@@ -114,11 +99,7 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {folder.children.map((child) => (
-                  <TableRow 
-                    key={child.id}
-                    className="border-shopify-border-subdued hover:bg-shopify-background"
-                  >
+                {folder.children.map(child => <TableRow key={child.id} className="border-shopify-border-subdued hover:bg-shopify-background">
                     <TableCell className="text-sm">{child.name}</TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
@@ -127,19 +108,13 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">
-                      {child.lastSync 
-                        ? formatDateTime(child.lastSync)
-                        : "Never"}
+                      {child.lastSync ? formatDateTime(child.lastSync) : "Never"}
                     </TableCell>
-                  </TableRow>
-                ))}
+                  </TableRow>)}
               </TableBody>
             </Table>
           </CardContent>
-        </Card>
-      )}
-    </div>
-  );
+        </Card>}
+    </div>;
 };
-
 export default FolderDetails;
