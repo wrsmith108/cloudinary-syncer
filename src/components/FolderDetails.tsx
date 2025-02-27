@@ -1,11 +1,16 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertCircle, MoreVertical, RefreshCw, Trash2 } from "lucide-react";
+import { CheckCircle, AlertCircle, MoreVertical, RefreshCw, Trash2, Calendar } from "lucide-react";
 import { FolderNode } from "@/types/folder";
 import { useToast } from "@/hooks/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { format, addMinutes, isAfter } from "date-fns";
 
 interface FolderDetailsProps {
   folder: FolderNode | null;
@@ -15,6 +20,15 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
   folder
 }) => {
   const { toast } = useToast();
+  const [syncSchedule, setSyncSchedule] = useState<"now" | "scheduled">("now");
+  const [scheduledDate, setScheduledDate] = useState<string>(
+    format(addMinutes(new Date(), 30), "yyyy-MM-dd")
+  );
+  const [scheduledTime, setScheduledTime] = useState<string>(
+    format(addMinutes(new Date(), 30), "HH:mm")
+  );
+  const [syncScheduled, setSyncScheduled] = useState<boolean>(false);
+  const [scheduledSyncTime, setScheduledSyncTime] = useState<Date | null>(null);
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
@@ -61,12 +75,59 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
     });
   };
 
+  const getScheduledDateTime = () => {
+    const dateTimeString = `${scheduledDate}T${scheduledTime}`;
+    return new Date(dateTimeString);
+  };
+
   const handleSync = () => {
-    console.log(`Initiating sync for folder: ${folder.id}`);
+    if (syncSchedule === "now") {
+      console.log(`Initiating sync for folder: ${folder.id}`);
+      toast({
+        title: "Sync Initiated",
+        description: `Folder "${folder.name}" is being synchronized`,
+      });
+    } else {
+      const syncTime = getScheduledDateTime();
+      setScheduledSyncTime(syncTime);
+      setSyncScheduled(true);
+      
+      console.log(`Scheduling sync for folder: ${folder.id} at ${syncTime.toString()}`);
+      toast({
+        title: "Sync Scheduled",
+        description: `Folder "${folder.name}" will be synchronized at ${format(syncTime, "MMM d, yyyy h:mm a")}`,
+      });
+      
+      // Set a timeout to trigger the sync at the scheduled time
+      const now = new Date();
+      const timeUntilSync = syncTime.getTime() - now.getTime();
+      
+      if (timeUntilSync > 0) {
+        setTimeout(() => {
+          toast({
+            title: "Sync Initiated",
+            description: `Scheduled sync for folder "${folder.name}" is now running`,
+          });
+          setSyncScheduled(false);
+          setScheduledSyncTime(null);
+        }, timeUntilSync);
+      }
+    }
+  };
+
+  const handleCancelScheduledSync = () => {
+    setSyncScheduled(false);
+    setScheduledSyncTime(null);
     toast({
-      title: "Sync Initiated",
-      description: `Folder "${folder.name}" is being synchronized`,
+      title: "Sync Cancelled",
+      description: `Scheduled sync for folder "${folder.name}" has been cancelled`,
     });
+  };
+
+  const isValidScheduleTime = () => {
+    const scheduledTime = getScheduledDateTime();
+    const now = new Date();
+    return isAfter(scheduledTime, now);
   };
 
   return <div className="space-y-5">
@@ -79,11 +140,112 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium mb-2 text-shopify-text">Sync</p>
-              <div className="mt-1">
-                <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={handleSync}>
-                  <RefreshCw size={14} className="mr-1" />
-                  Sync
-                </Button>
+              <div className="mt-1 flex space-x-2">
+                {syncScheduled && scheduledSyncTime ? (
+                  <div className="flex flex-col">
+                    <div className="text-sm mb-2">
+                      Sync scheduled for {format(scheduledSyncTime, "MMM d, yyyy h:mm a")}
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text"
+                      onClick={handleCancelScheduledSync}
+                    >
+                      Cancel Scheduled Sync
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" 
+                      onClick={handleSync}
+                    >
+                      <RefreshCw size={14} className="mr-1" />
+                      Sync
+                    </Button>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text"
+                        >
+                          <Calendar size={14} className="mr-1" />
+                          Schedule
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80">
+                        <div className="space-y-4">
+                          <h4 className="font-medium text-sm">Schedule Sync</h4>
+                          <div className="space-y-2">
+                            <Label htmlFor="sync-time">Sync Time</Label>
+                            <Select 
+                              value={syncSchedule} 
+                              onValueChange={(value) => setSyncSchedule(value as "now" | "scheduled")}
+                            >
+                              <SelectTrigger id="sync-time">
+                                <SelectValue placeholder="Select time" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="now">Now</SelectItem>
+                                <SelectItem value="scheduled">Schedule for later</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          {syncSchedule === "scheduled" && (
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="sync-date">Date</Label>
+                                <Input
+                                  id="sync-date"
+                                  type="date"
+                                  value={scheduledDate}
+                                  onChange={(e) => setScheduledDate(e.target.value)}
+                                  className="w-full"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="sync-time-input">Time</Label>
+                                <Input
+                                  id="sync-time-input"
+                                  type="time"
+                                  value={scheduledTime}
+                                  onChange={(e) => setScheduledTime(e.target.value)}
+                                  className="w-full"
+                                />
+                              </div>
+                              <Button 
+                                onClick={handleSync} 
+                                className="w-full"
+                                disabled={!isValidScheduleTime()}
+                              >
+                                Schedule Sync
+                              </Button>
+                              {!isValidScheduleTime() && (
+                                <p className="text-xs text-[#D82C0D]">
+                                  Please select a future time
+                                </p>
+                              )}
+                            </div>
+                          )}
+
+                          {syncSchedule === "now" && (
+                            <Button 
+                              onClick={handleSync} 
+                              className="w-full"
+                            >
+                              Sync Now
+                            </Button>
+                          )}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </>
+                )}
               </div>
             </div>
             <div>
@@ -156,4 +318,3 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
 };
 
 export default FolderDetails;
-
