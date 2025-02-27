@@ -1,4 +1,25 @@
 
+/**
+ * SubFoldersTable component for displaying a list of subfolders with their sync status.
+ * 
+ * Features:
+ * - Renders a table of subfolders with their names, status icons, and last sync times
+ * - Auto-hides when no subfolders exist
+ * - Uses StatusIcon component to show sync status visually
+ * - Formats dates consistently with DateTimeFormatter
+ * - Styled to match Shopify design system
+ * 
+ * Props:
+ * - folder: Parent folder object containing children array
+ * 
+ * Dependencies:
+ * - Requires StatusIcon and DateTimeFormatter components
+ * - Uses shadcn/ui Card and Table components
+ * 
+ * Assumptions:
+ * - Folder has children property that is an array of FolderNode objects
+ * - Each child has id, name, status, and lastSync properties
+ */
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

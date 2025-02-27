@@ -1,4 +1,23 @@
 
+/**
+ * DateTimeFormatter component for consistent date/time formatting.
+ * 
+ * Features:
+ * - Formats date strings into localized, readable format
+ * - Provides fallback text for undefined/null dates
+ * - Uses browser's Intl API for localization support
+ * - Displays full datetime with timezone information
+ * 
+ * Props:
+ * - dateString: ISO date string to format
+ * - fallback: Text to display when date is missing (defaults to "Never")
+ * 
+ * Usage:
+ * ```tsx
+ * <DateTimeFormatter dateString="2023-05-15T14:30:00Z" />
+ * <DateTimeFormatter dateString={folder.lastSync} fallback="Not synchronized" />
+ * ```
+ */
 import React from "react";
 
 interface DateTimeFormatterProps {

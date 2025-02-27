@@ -1,4 +1,34 @@
 
+/**
+ * SyncControls component for managing synchronization operations.
+ * 
+ * Features:
+ * - Provides immediate sync functionality via "Sync" button
+ * - Offers scheduled sync capability through "Schedule" button and popover
+ * - Displays currently scheduled sync with cancellation option
+ * - Supports multiple timezones for scheduling
+ * - Validates scheduled times to ensure they're in the future
+ * - Shows appropriate UI based on current scheduling state
+ * 
+ * States:
+ * - Active scheduled sync: Shows scheduled time and cancel button
+ * - No scheduled sync: Shows sync and schedule buttons
+ * - Schedule popover: Shows date/time/timezone inputs with validation
+ * 
+ * Props:
+ * - folderName/folderId: Identifiers for the folder being synced
+ * - syncScheduled: Whether a sync is currently scheduled
+ * - scheduledSyncTime: Date/time of scheduled sync
+ * - syncSchedule: Current sync mode ("now" or "scheduled")
+ * - scheduledDate: Selected date for scheduled sync
+ * - scheduledTime: Selected time for scheduled sync
+ * - selectedTimeZone: Selected timezone for scheduled sync
+ * - Various callback functions for handling user interactions
+ * 
+ * Dependencies:
+ * - Uses date-fns and date-fns-tz for date manipulation and formatting
+ * - Uses shadcn/ui components for buttons, popovers, inputs, and selects
+ */
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

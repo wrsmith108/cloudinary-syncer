@@ -1,4 +1,34 @@
 
+/**
+ * FolderOverviewCard component for displaying folder summary and action controls.
+ * 
+ * Features:
+ * - Displays folder status, last sync time, and total asset count
+ * - Provides sync and remove action buttons
+ * - Integrates SyncControls component for synchronization options
+ * - Adapts layout for different screen sizes
+ * - Follows Shopify design system
+ * 
+ * Layout:
+ * - Two-column grid for desktop view
+ * - Status and statistics in left column
+ * - Action buttons in right column
+ * 
+ * Props:
+ * - folder: Current folder data
+ * - totalItems: Count of all assets in folder and subfolders
+ * - syncScheduled: Whether a sync is currently scheduled
+ * - scheduledSyncTime: Date/time of scheduled sync
+ * - syncSchedule: Current sync mode ("now" or "scheduled")
+ * - scheduledDate: Selected date for scheduled sync
+ * - scheduledTime: Selected time for scheduled sync
+ * - selectedTimeZone: Selected timezone for scheduled sync
+ * - Various callback functions for handling user interactions
+ * 
+ * Dependencies:
+ * - Requires StatusIcon, DateTimeFormatter, and SyncControls components
+ * - Uses shadcn/ui Card components
+ */
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
