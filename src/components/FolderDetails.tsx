@@ -1,15 +1,21 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertCircle, MoreVertical, RefreshCw } from "lucide-react";
+import { CheckCircle, AlertCircle, MoreVertical, RefreshCw, Trash2 } from "lucide-react";
 import { FolderNode } from "@/types/folder";
+import { useToast } from "@/hooks/use-toast";
+
 interface FolderDetailsProps {
   folder: FolderNode | null;
 }
+
 const FolderDetails: React.FC<FolderDetailsProps> = ({
   folder
 }) => {
+  const { toast } = useToast();
+
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('default', {
@@ -22,11 +28,13 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
       timeZoneName: 'short'
     }).format(date);
   };
+
   if (!folder) {
     return <div className="text-shopify-icon-subdued text-center p-4">
         Select a folder to view its details
       </div>;
   }
+
   const getStatusIcon = (status: "synced" | "error" | "pending") => {
     switch (status) {
       case "synced":
@@ -44,6 +52,15 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
   const totalItems = folder.children?.reduce((acc, child) => {
     return acc + (child.children?.length || 0) + 1;
   }, 0) || 0;
+
+  const handleRemove = () => {
+    console.log(`Removing folder: ${folder.id}`);
+    toast({
+      title: "Removed from Shopify",
+      description: `Folder "${folder.name}" has been removed`,
+    });
+  };
+
   return <div className="space-y-5">
       {/* Folder Overview Card */}
       <Card className="border-shopify-border-subdued shadow-none">
@@ -60,6 +77,20 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
               }}>
                   <RefreshCw size={14} className="mr-1" />
                   Sync
+                </Button>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium mb-2 text-shopify-text">Remove</p>
+              <div className="mt-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text text-[#D82C0D] hover:text-[#D82C0D]"
+                  onClick={handleRemove}
+                >
+                  <Trash2 size={14} className="mr-1" />
+                  Remove
                 </Button>
               </div>
             </div>
@@ -117,4 +148,5 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
         </Card>}
     </div>;
 };
+
 export default FolderDetails;
