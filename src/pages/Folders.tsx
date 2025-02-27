@@ -38,7 +38,10 @@ const Folders = () => {
     <div className="grid grid-cols-3 gap-6 h-[calc(100vh-8rem)]">
       <div className="col-span-1 bg-shopify-surface border border-shopify-border rounded-lg overflow-hidden">
         <FolderSearch value={searchQuery} onChange={setSearchQuery} />
-        <div className="overflow-auto h-[calc(100%-5rem)]">
+        <div className="px-4 py-2 border-b border-shopify-border">
+          <h3 className="font-medium text-shopify-text">Recent</h3>
+        </div>
+        <div className="overflow-auto h-[calc(100%-8rem)]">
           {initialFolders.map((folder) => (
             <FolderItem
               key={folder.id}
