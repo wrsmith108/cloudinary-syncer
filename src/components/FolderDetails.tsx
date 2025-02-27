@@ -46,10 +46,8 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
   const [scheduledSyncTime, setScheduledSyncTime] = useState<Date | null>(null);
   const [selectedTimeZone, setSelectedTimeZone] = useState<string>(() => {
     try {
-      // Try to get the user's local time zone
       return Intl.DateTimeFormat().resolvedOptions().timeZone;
     } catch (e) {
-      // Default to ET if we can't determine the local time zone
       return "America/New_York";
     }
   });
@@ -98,6 +96,13 @@ const FolderDetails: React.FC<FolderDetailsProps> = ({
   }, 0) || 0;
 
   const handleRemove = () => {
+    // Reset sync scheduling state
+    setSyncSchedule("now");
+    setSyncScheduled(false);
+    setScheduledSyncTime(null);
+    setScheduledDate(format(addMinutes(new Date(), 30), "yyyy-MM-dd"));
+    setScheduledTime(format(addMinutes(new Date(), 30), "HH:mm"));
+    
     console.log(`Removing folder: ${folder.id}`);
     toast({
       title: "Removed from Shopify",
