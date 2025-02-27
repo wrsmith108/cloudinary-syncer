@@ -5,7 +5,7 @@ import { FolderNode } from "@/types/folder";
 import { format, addMinutes } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import { FolderOverview } from "./FolderOverview";
-import { SubfoldersTable } from "./SubfoldersTable";
+import { SubFoldersTable } from "./SubFoldersTable";
 
 interface FolderDetailsProps {
   folder: FolderNode | null;
@@ -128,7 +128,7 @@ export const FolderDetails: React.FC<FolderDetailsProps> = ({ folder }) => {
         onRemove={handleRemove}
         onCancelScheduledSync={handleCancelScheduledSync}
       />
-      <SubfoldersTable folder={folder} />
+      <SubFoldersTable folder={folder} />
     </div>
   );
 };
