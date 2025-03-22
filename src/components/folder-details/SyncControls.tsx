@@ -1,4 +1,3 @@
-
 /**
  * SyncControls component for managing synchronization operations.
  * 
@@ -40,19 +39,37 @@ import { isAfter } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 
 // Common time zones with readable labels
-export const TIME_ZONES = [
-  { value: "America/New_York", label: "Eastern Time (ET)" },
-  { value: "America/Chicago", label: "Central Time (CT)" },
-  { value: "America/Denver", label: "Mountain Time (MT)" },
-  { value: "America/Los_Angeles", label: "Pacific Time (PT)" },
-  { value: "America/Anchorage", label: "Alaska Time (AKT)" },
-  { value: "Pacific/Honolulu", label: "Hawaii Time (HT)" },
-  { value: "Europe/London", label: "Greenwich Mean Time (GMT)" },
-  { value: "Europe/Paris", label: "Central European Time (CET)" },
-  { value: "Asia/Tokyo", label: "Japan Standard Time (JST)" },
-  { value: "Australia/Sydney", label: "Australian Eastern Time (AET)" }
-];
-
+export const TIME_ZONES = [{
+  value: "America/New_York",
+  label: "Eastern Time (ET)"
+}, {
+  value: "America/Chicago",
+  label: "Central Time (CT)"
+}, {
+  value: "America/Denver",
+  label: "Mountain Time (MT)"
+}, {
+  value: "America/Los_Angeles",
+  label: "Pacific Time (PT)"
+}, {
+  value: "America/Anchorage",
+  label: "Alaska Time (AKT)"
+}, {
+  value: "Pacific/Honolulu",
+  label: "Hawaii Time (HT)"
+}, {
+  value: "Europe/London",
+  label: "Greenwich Mean Time (GMT)"
+}, {
+  value: "Europe/Paris",
+  label: "Central European Time (CET)"
+}, {
+  value: "Asia/Tokyo",
+  label: "Japan Standard Time (JST)"
+}, {
+  value: "Australia/Sydney",
+  label: "Australian Eastern Time (AET)"
+}];
 interface SyncControlsProps {
   folderName: string;
   folderId: string;
@@ -69,7 +86,6 @@ interface SyncControlsProps {
   onSync: () => void;
   onCancelScheduledSync: () => void;
 }
-
 export const SyncControls: React.FC<SyncControlsProps> = ({
   folderName,
   folderId,
@@ -90,53 +106,32 @@ export const SyncControls: React.FC<SyncControlsProps> = ({
     const dateTimeString = `${scheduledDate}T${scheduledTime}`;
     return new Date(dateTimeString);
   };
-
   const isValidScheduleTime = () => {
     const scheduledTime = getScheduledDateTime();
     const now = new Date();
     return isAfter(scheduledTime, now);
   };
-
   const formatScheduledTime = (time: Date) => {
     return formatInTimeZone(time, selectedTimeZone, "MMM d, yyyy h:mm a (zzz)");
   };
-
   if (syncScheduled && scheduledSyncTime) {
-    return (
-      <div className="flex flex-col">
+    return <div className="flex flex-col">
         <div className="text-sm mb-2">
           Sync scheduled for {formatScheduledTime(scheduledSyncTime)}
         </div>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text"
-          onClick={onCancelScheduledSync}
-        >
+        <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={onCancelScheduledSync}>
           Cancel Scheduled Sync
         </Button>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <>
-      <Button 
-        variant="outline" 
-        size="sm" 
-        className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" 
-        onClick={onSync}
-      >
+  return <>
+      <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={onSync}>
         <RefreshCw size={14} className="mr-1" />
         Sync
       </Button>
       <Popover>
         <PopoverTrigger asChild>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text"
-          >
+          <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background text-zinc-700">
             <Calendar size={14} className="mr-1" />
             Schedule
           </Button>
@@ -146,10 +141,7 @@ export const SyncControls: React.FC<SyncControlsProps> = ({
             <h4 className="font-medium text-sm">Schedule Sync</h4>
             <div className="space-y-2">
               <Label htmlFor="sync-time">Sync Time</Label>
-              <Select 
-                value={syncSchedule} 
-                onValueChange={(value) => onSyncScheduleChange(value as "now" | "scheduled")}
-              >
+              <Select value={syncSchedule} onValueChange={value => onSyncScheduleChange(value as "now" | "scheduled")}>
                 <SelectTrigger id="sync-time">
                   <SelectValue placeholder="Select time" />
                 </SelectTrigger>
@@ -160,72 +152,41 @@ export const SyncControls: React.FC<SyncControlsProps> = ({
               </Select>
             </div>
 
-            {syncSchedule === "scheduled" && (
-              <div className="space-y-4">
+            {syncSchedule === "scheduled" && <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="sync-date">Date</Label>
-                  <Input
-                    id="sync-date"
-                    type="date"
-                    value={scheduledDate}
-                    onChange={(e) => onScheduledDateChange(e.target.value)}
-                    className="w-full"
-                  />
+                  <Input id="sync-date" type="date" value={scheduledDate} onChange={e => onScheduledDateChange(e.target.value)} className="w-full" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="sync-time-input">Time</Label>
-                  <Input
-                    id="sync-time-input"
-                    type="time"
-                    value={scheduledTime}
-                    onChange={(e) => onScheduledTimeChange(e.target.value)}
-                    className="w-full"
-                  />
+                  <Input id="sync-time-input" type="time" value={scheduledTime} onChange={e => onScheduledTimeChange(e.target.value)} className="w-full" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="time-zone">Time Zone</Label>
-                  <Select 
-                    value={selectedTimeZone} 
-                    onValueChange={onSelectedTimeZoneChange}
-                  >
+                  <Select value={selectedTimeZone} onValueChange={onSelectedTimeZoneChange}>
                     <SelectTrigger id="time-zone">
                       <SelectValue placeholder="Select time zone" />
                     </SelectTrigger>
                     <SelectContent className="max-h-80">
-                      {TIME_ZONES.map((tz) => (
-                        <SelectItem key={tz.value} value={tz.value}>
+                      {TIME_ZONES.map(tz => <SelectItem key={tz.value} value={tz.value}>
                           {tz.label}
-                        </SelectItem>
-                      ))}
+                        </SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
-                <Button 
-                  onClick={onSync} 
-                  className="w-full"
-                  disabled={!isValidScheduleTime()}
-                >
+                <Button onClick={onSync} className="w-full" disabled={!isValidScheduleTime()}>
                   Schedule Sync
                 </Button>
-                {!isValidScheduleTime() && (
-                  <p className="text-xs text-[#D82C0D]">
+                {!isValidScheduleTime() && <p className="text-xs text-[#D82C0D]">
                     Please select a future time
-                  </p>
-                )}
-              </div>
-            )}
+                  </p>}
+              </div>}
 
-            {syncSchedule === "now" && (
-              <Button 
-                onClick={onSync} 
-                className="w-full"
-              >
+            {syncSchedule === "now" && <Button onClick={onSync} className="w-full">
                 Sync Now
-              </Button>
-            )}
+              </Button>}
           </div>
         </PopoverContent>
       </Popover>
-    </>
-  );
+    </>;
 };
