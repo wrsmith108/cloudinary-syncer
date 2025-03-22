@@ -1,3 +1,4 @@
+
 /**
  * SyncControls component for managing synchronization operations.
  * 
@@ -116,22 +117,22 @@ export const SyncControls: React.FC<SyncControlsProps> = ({
   };
   if (syncScheduled && scheduledSyncTime) {
     return <div className="flex flex-col">
-        <div className="text-sm mb-2">
+        <div className="text-sm mb-2 text-shopify-text">
           Sync scheduled for {formatScheduledTime(scheduledSyncTime)}
         </div>
-        <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={onCancelScheduledSync}>
+        <Button variant="outline" size="sm" className="h-8 text-sm font-medium" onClick={onCancelScheduledSync}>
           Cancel Scheduled Sync
         </Button>
       </div>;
   }
   return <>
-      <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background hover:text-shopify-text" onClick={onSync}>
+      <Button variant="outline" size="sm" className="h-8 text-sm font-medium" onClick={onSync}>
         <RefreshCw size={14} className="mr-1" />
         Sync
       </Button>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8 text-sm font-medium border-shopify-border-subdued hover:bg-shopify-background text-zinc-700">
+          <Button variant="outline" size="sm" className="h-8 text-sm font-medium">
             <Calendar size={14} className="mr-1" />
             Schedule
           </Button>
@@ -177,7 +178,7 @@ export const SyncControls: React.FC<SyncControlsProps> = ({
                 <Button onClick={onSync} className="w-full" disabled={!isValidScheduleTime()}>
                   Schedule Sync
                 </Button>
-                {!isValidScheduleTime() && <p className="text-xs text-[#D82C0D]">
+                {!isValidScheduleTime() && <p className="text-xs text-destructive">
                     Please select a future time
                   </p>}
               </div>}
