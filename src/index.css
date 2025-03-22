@@ -11,7 +11,7 @@
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 142 54% 43%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -42,4 +42,13 @@
   .nav-tab.active {
     @apply border-b-2 border-shopify-text;
   }
+  
+  .service-card {
+    @apply relative overflow-hidden rounded-xl transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .service-card:hover .service-card-content {
+    @apply bg-opacity-90;
+  }
 }
+
