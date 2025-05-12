@@ -10,7 +10,7 @@ const Header = () => {
     <header className="border-b border-shopify-border bg-shopify-surface">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <h1 className="text-xl font-semibold">Cloudinary Sync</h1>
+          <h1 className="text-xl font-semibold">MediaSync</h1>
           <div className="flex items-center space-x-4">
             <button className="p-2 text-shopify-icon-default hover:text-shopify-text transition-colors">
               <Bell size={20} />
